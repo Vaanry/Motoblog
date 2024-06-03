@@ -1,0 +1,26 @@
+{% url 'users:profile' message_item.author.username as the_user_url%}
+{% load thumbnail %}
+{% load tz %}
+<div class="list-group-item {% if not message_item.is_readed %}unreaded{% endif %}">
+    {% thumbnail message_item.author.foto "50x50" crop="center" as im %}
+    <a href="{{ the_user_url }}"><img class="avatar-comment" src="{{ im.url }}"></a>
+    {% endthumbnail %}
+    <div class="reply-body">
+        <ul class="list-inline">
+            <li class="drop-left-padding">
+                <strong class="list-group-item-heading"><a href="{{ the_user_url }}">{{ message_item.author.username }}</a></strong>
+            </li>
+            <li class="pull-right text-muted"><small>{{ message_item.pub_date|utc }}</small></li>
+        
+        <div>{{ message_item.message|safe }}</div>
+        {% if user == message_item.author %}
+        <a class="btn btn-sm text-muted" href="{% url 'chat:edit_message' message_item.chat.id message_item.id %}" role="button">
+        Отредактировать сообщение
+            </a>
+        <a class="btn btn-sm text-muted" href="{% url 'chat:delete_message' message_item.chat.id message_item.id %}" role="button">
+        Удалить сообщение
+          </a>
+          {% endif %}
+    </ul>
+    </div>
+</div>

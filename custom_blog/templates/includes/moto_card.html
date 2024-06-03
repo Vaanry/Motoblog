@@ -1,0 +1,23 @@
+
+{% load thumbnail %}
+<div class="col d-flex justify-content-center">
+  <div class="card" style="width: 40rem;">
+    <div class="card-body">
+    <div class="col d-flex justify-content-center">
+        <h5 class="card-title">{{ motobike.name }}</h5>
+      </div>
+    
+      {% thumbnail motobike.foto "200x200" crop="center" as im %}
+      {% if motobike.foto %}
+      
+        <a href="{{ im.url }}" target="_blank">
+          <img class="rounded mx-auto d-block" src="{{ im.url }}" >
+        </a>
+      {% endif %}
+    
+      {% endthumbnail %}
+      <div class="col d-flex justify-content-center">
+      <a href="{% url 'moto:moto_detail' motobike.id%}" class="card-link">Подробнее</a>
+    </div>
+  </div>
+</div>

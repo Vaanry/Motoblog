@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}
+  {% if '/edit/' in request.path %}
+    Редактирование сообщения
+  {% elif "/delete/" in request.path %}
+    Удаление сообщения
+  {% else %}
+    Сообщения
+  {% endif %}
+{% endblock %}
+{% block content %}
+<div id="message_form" class="w-50 p-3">
+    <form id="message-form" class="form-control" method="post" >
+        {% csrf_token %}
+        {% if '/delete/' in request.path %}
+        <p>{{ instance.pub_date|date:"d E Y" }} <br>
+        <p>{{instance.message}}<br>
+            <br>
+        <button type="submit" class="btn btn-secondary btn-sm" onclick="return ETextEditor.validateForm('message-form')">
+            <span class="ico ico-comment"></span>Удалить сообщение?</button>
+        {% else %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-secondary btn-sm" onclick="return ETextEditor.validateForm('message-form')">
+            <span class="ico ico-comment"></span>Отправить</button>
+        {% endif %}
+    </form>
+</div>
+<br>
+    {% load tz %}
+
+        <div id="messages" class="panel">
+            <div id="innerMessages">
+                {% for message in page_obj %}
+                        {% include 'dialogs/message.html' with message_item=message %}
+                        <br>
+                {% endfor %}
+                {% include "includes/paginator.html" %}
+            </div>
+        </div>
+
+{% endblock %}

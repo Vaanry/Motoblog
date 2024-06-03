@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with request.resolver_match.view_name as view_name %}
+{% if view_name == 'calculator:mark' %}
+<h5>В настоящий момент калькулятор поддерживает только эти марки:</h5>
+{% endif %}
+<form>
+{% if view_name == 'calculator:price' %}
+<h2>Марка {{ mark }} </h2>
+{% endif %}
+<form>
+  <table>
+    {{ form }}
+  </table>
+  <input type="submit" value="Отправить">
+</form>
+<br>
+<p>
+{% if view_name == 'calculator:price' %}
+<a class="btn btn-secondary btn-sm" href="{% url 'calculator:mark' %}">Назад</a>
+{% endif %}</p>
+{% endwith %}
+{% with data=request.GET %}
+  {% if form.is_valid %}
+      Приблизительная цена: <b>{{ price }}</b> рублей.
+      <br>
+      Внимание! Данная рассчитанная цена актуальна на апрель 2024 года в России.
+  {% endif %}
+{% endwith %} 
+{% endblock %}

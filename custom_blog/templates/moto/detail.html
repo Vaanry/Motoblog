@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ motobike.name }}
+{% endblock %}
+{% block content %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-body">
+        <h5 class="card-title col d-flex justify-content-center">Мотоцикл {{ motobike.name }}</h5>
+        <hr>
+        <h6 class="card-subtitle mb-2 text-muted col d-flex justify-content-center">Производитель: {{motobike.manufacturer}}</h6>
+        <h6 class="card-subtitle mb-2 text-muted col d-flex justify-content-center">Модель: {{motobike.model}}</h6>
+        <hr>
+        <h5 class="card-subtitle col d-flex justify-content-center">Описание</h5>
+        <p>
+        <p class="text-center">{{motobike.description}}</p>
+        {% if motobike.foto %}
+          <a href="{{ motobike.foto.url }}" target="_blank">
+            <img class="border-3 rounded img-fluid img-thumbnail mb-2 mx-auto d-block" src="{{ motobike.foto.url }}">
+          </a>
+        {% endif %}
+      </div>
+
+      <h6 class="card-subtitle mb-2 text-muted col d-flex justify-content-center">
+        Владельцы: {% for owner in owners %}</h6>
+        <ul class="list-group">
+        <a href="{% url 'blog:profile' owner %}" class="list-group-item d-flex justify-content-center">{{owner}}</a>
+        {% endfor %}
+    </ul>
+    <div class="mb-2">
+      <a class="btn btn-sm d-flex justify-content-center text-muted" href="{% url 'moto:edit_moto' motobike.id %}" role="button">
+        Отредактировать
+      </a>
+    </div>
+    </div>
+  </div>
+{% endblock %}

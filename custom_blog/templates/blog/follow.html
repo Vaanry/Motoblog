@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Избранное пользователя {{ user.username }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-center">
+  <h1>Последние обновления от авторов</h1>
+  </div>
+  <hr>
+  <div class="d-flex justify-content-center">
+  {% include "includes/switcher.html" %}
+  </div>
+  {% for post in page_obj %}
+    {% include 'includes/post_card.html' %}     
+  {% endfor %}
+  {% include "includes/paginator.html" %}
+{% endblock %}

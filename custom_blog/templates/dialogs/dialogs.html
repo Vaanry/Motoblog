@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% load django_bootstrap5 %}
+{% block title %}
+Диалоги
+{% endblock %}
+{% block content %}
+<div class="panel">
+    {% load tz %}
+    {% load custom %}
+    {% if chats.count == 0 %}
+        <div class="panel panel-body"> "Нет ни одного начатого диалога"</div>
+    {% endif %}
+    {% for chat in page_obj %}
+        {% if chat.message_set.count != 0 %}
+            {% with last_message=chat.message_set.last %}
+                {% get_companion user chat as companion %}
+                <a class="list-group-item {% if companion == last_message.author and not last_message.is_readed %}unreaded{% endif %}" 
+                href="{% url 'chat:messages' last_message.chat.id%}">
+                    {% thumbnail companion.foto "50x50" crop="center" as im %}
+                    <img class="avatar-messages" src="{{ im.url }}">
+                    {% endthumbnail %}
+                    <div class="reply-body">
+                        <ul class="list-inline">
+                            <li class="drop-left-padding">
+                                <strong class="list-group-item-heading">{{ companion.username }}</strong>
+                            </li>
+                            <li class="pull-right text-muted"><small>{{ last_message.pub_date|utc }}</small></li>
+                        
+                        {% if companion != last_message.author %}
+                            <div>
+                                <div class="attached-reply-body {% if not last_message.is_readed %}unreaded{% endif %}">
+                                Я: {{ last_message.message|truncatechars_html:"200"|safe|striptags }}</div>
+                            </div>
+                        {% else %}
+                            <div>{{companion.username}}: {{ last_message.message|truncatechars_html:"200"|safe|striptags }}</div>
+                        {% endif %}
+                    </div>
+                </ul>
+                </a>
+            {% endwith %}
+            <br>
+        {% endif %}
+    {% endfor %}
+    {% include "includes/paginator.html" %}
+</div>
+{% endblock %}

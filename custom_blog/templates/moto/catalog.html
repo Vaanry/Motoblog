@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+  Мотоциклы
+{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-center">
+<h1>Каталог мотоциклов</h1>
+</div>
+<a class="btn btn-primary btn-sm"
+href="{% url 'moto:create_moto' %}"
+role="button">Добавить мотоцикл в каталог</a>
+<hr>
+  {% for motobike in page_obj %}
+    <article class="mb-5">
+      {% include "includes/moto_card.html" %}
+    </article>
+  {% endfor %}
+
+  {% include "includes/paginator.html" %}
+{% endblock %}
