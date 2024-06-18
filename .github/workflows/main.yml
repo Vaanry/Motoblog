@@ -37,7 +37,7 @@ jobs:
         name: Push Docker image to Docker Hub
         runs-on: ubuntu-latest
         needs: tests
-        environment: env
+        #environment: env
         steps:
           - name: Check out the repo
             # Проверка доступности репозитория Docker Hub для workflow
@@ -48,8 +48,7 @@ jobs:
           - name: Login to Docker 
             # Запуск скрипта авторизации на Docker Hub
             uses: docker/login-action@v1 
-            #with:
-            env:
+            with:
               username: ${{ secrets.DOCKER_USERNAME }}
               password: ${{ secrets.DOCKER_PASSWORD }}
     
